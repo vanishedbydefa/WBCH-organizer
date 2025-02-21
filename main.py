@@ -1,90 +1,57 @@
-import os
 import sys
 import signal
-import hashlib
 import argparse
-import concurrent.futures
 import multiprocessing
+from pathlib import Path
+from typing import Optional, List
 
+from file_management import find_files
+from hasher import Hasher, HashDict, hash_file, phash_file
 from logger import logger
-from epdb import download_epdb, load_db, find_episode_by_hash, report
-from messagebox import ask_rename
+from epdb import download_epdb, load_db, report
 
 # Fix multiprocessing issues in PyInstaller
 multiprocessing.set_start_method("spawn", force=True)
 
-wbch_files = []
+hash_dict: Optional[HashDict] = None
 
-def hash_file(file_path):
-    try:
-        sha256_hash = hashlib.sha256()
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(1 * 10 ** 6), b""):
-                sha256_hash.update(chunk)
-        return file_path, sha256_hash.hexdigest()
-    except Exception as e:
-        logger.error(f"Error hashing file: {file_path}, Error: {e}")
-        return file_path, None
+def main(base_path: str | Path):
+    global hash_dict
+    if not isinstance(base_path, Path):
+        base_path = Path(base_path)
 
-def index_files(base_path: os.PathLike):
-    logger.info(f"Indexing WBCH files in: {base_path}")
-
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        futures = []
-        for root, _, files in os.walk(base_path):
-            for name in files:
-                file_path = os.path.join(root, name)
-                futures.append(executor.submit(hash_file, file_path))
-
-        for future in concurrent.futures.as_completed(futures):
-            file_path, file_hash = future.result()
-            if file_hash:
-                wbch_files.append([file_path, file_hash])
-                logger.debug(f"Indexed file: {file_path} with hash: {file_hash}")
-
-    logger.info("Indexing done")
-
-def rename_files(db):
-    episode_cache = {}
-
-    for file in wbch_files:
-        file_hash = file[1]
-        if file_hash in episode_cache:
-            episode = episode_cache[file_hash]
-        else:
-            episode = find_episode_by_hash(db, file_hash)
-            episode_cache[file_hash] = episode
-
-        if episode is None:
-            continue
-
-        new_name = f"{episode.get('name')}.mp4".replace("?", "")
-        old_file_path = file[0]
-        new_file_path = os.path.join(os.path.dirname(old_file_path), new_name)
-
-        try:
-            os.rename(old_file_path, new_file_path)
-            logger.debug(f"Renamed {old_file_path} to {new_file_path}")
-        except Exception as e:
-            logger.error(f"Error renaming file: {old_file_path} to {new_file_path}, Error: {e}")
-
-def main(base_path: os.PathLike):
     print("Run this Program in a terminal with emojie support")
-    rename = ask_rename()
-    epdb_path = download_epdb(base_path)
-    db = load_db(epdb_path)
 
-    index_files(base_path)
-    if rename:
-        rename_files(db)
-    report(db, wbch_files)
+    # epdb_path = download_epdb(base_path)
+    db = load_db("epdb.json")
+    files: List[Path] = find_files(base_path)
+    hash_dict = HashDict(base_path/"wbch_index.json")
+    hash_dict.load_dict_from_file()
+
+    # hash_dict.clear_hash_type("phash")
+    hash_dict.clean_removed_files()
+
+    hash_types = {
+        "hash": hash_file,
+        "phash": phash_file
+    }
+    for hash_type, hash_func in hash_types.items():
+        hasher = Hasher(hash_func, hash_type, hash_dict, files, num_workers=4)
+        hasher.hash_files()
+    hash_dict.persist_dict_to_file()
+
+    report(db, hash_dict, base_path)
 
     if hasattr(sys, '_MEIPASS') or ".exe" in sys.argv[0]:
         input("Press Enter to exit...")
 
+
 def signal_handler(sig, frame):
     logger.info('Program interrupted, stopping...')
+    if hash_dict:
+        hash_dict.persist_dict_to_file()
     sys.exit(0)
+
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()  # Fix PyInstaller multiprocessing bug
