@@ -90,7 +90,15 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()  # Fix PyInstaller multiprocessing bug
     signal.signal(signal.SIGINT, signal_handler)
 
-    parser = argparse.ArgumentParser(description="WBCH-Organizer to organize and rename your WBCH collection")
-    parser.add_argument("-p", "--base_path", type=str, default="./", help="Path to your WBCH collection")
-    args = parser.parse_args()
-    main(args.base_path)
+    if hasattr(sys, '_MEIPASS') or ".exe" in sys.argv[0]:
+        base_path = input("Enter the path to your WBCH collection: ")
+    else:
+        parser = argparse.ArgumentParser(description="WBCH-Organizer to organize and rename your WBCH collection")
+        parser.add_argument("-p", "--base_path", type=str, required=True, default="./", help="Path to your WBCH collection")
+        args = parser.parse_args()
+        base_path = args.base_path
+    
+    if not os.path.exists(base_path):
+        logger.error(f"Provided path does not exist: {base_path}")
+        sys.exit(1)
+    main(base_path)
