@@ -1,13 +1,15 @@
 name: Build release EXE
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build-windows-exe:
     runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -63,8 +65,10 @@ jobs:
           path: dist/WBCH-organizer.exe
           if-no-files-found: error
 
-      - name: Attach EXE to GitHub release
-        if: github.event_name == 'release'
+      - name: Create GitHub release with EXE
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
           files: dist/WBCH-organizer.exe
