@@ -672,11 +672,105 @@
                 "episode": 8,
                 "hash": "B42AA6CC81F8B0632EA6F8765F4D0C880BD71426ADD47F9188B6920D6C87E752",
                 "tags": ["explicit"]
+            },
+            {           
+                "name": "WBCH S06E09 Normal-Version - Down the rabbit hole",
+                "episode": 9,
+                "hash": "4AA67833101997AF4593FB78EA2BB0F191FE7C074588C2BF423997956EDB06B8",
+                "tags": []
+            },
+            {           
+                "name": "WBCH S06E09 Explicit-Version - Down the rabbit hole",
+                "episode": 9,
+                "hash": "3FE759A06AA37F60548E5E84CC2281D72F4C68413EC5C31DD936D45C74001836",
+                "tags": ["explicit"]
+            },
+            {           
+                "name": "WBCH S06E10 Normal-Version - No Balls",
+                "episode": 10,
+                "hash": "1CA5C6E41C73163F1D55BC1F7EBEBB45065AA04B20867772DE675106B46FD385",
+                "tags": []
+            },
+            {           
+                "name": "WBCH S06E10 Explicit-Version - No Balls",
+                "episode": 10,
+                "hash": "BCA8A0F55A427503291AD2826D42AABD4B719A8B9A699AFA37D9869547A71E6A",
+                "tags": ["explicit"]
+            },
+            {
+                "name": "WBCH S06SF The ultimate whiteboy rapture",
+                "episode": "SF",
+                "hash": "AEEA49FF9F47718007335C785BDC41D96F586E4441CA72BF7CD077E6E1F83883",
+                "tags": []
             }
         ],
 	"premium_episodes": [
 	]
     },
+    "SEASON_SEVEN": {
+        "season": 7,
+        "episodes": [
+            {
+                "name": "WBCH S07E01 Easy-Version - TooYoungToPop-",
+                "episode": 1,
+                "hash": "875F5CA45FCBEF42E0D4F29C6886BA609D5F379E97C280F9267C2C723870E372",
+                "tags": ["easy"]
+            },
+            {
+                "name": "WBCH S07E01 Normal-Version - HurtMePlenty",
+                "episode": 1,
+                "hash": "B348349AF78433EAAA57C6932B155E29CED780EC07E92B727DF7977EFC8C9E7F",
+                "tags": []
+            },
+            {
+                "name": "WBCH S07E01 Explicit-Version - Nightmare",
+                "episode": 1,
+                "hash": "0BD49196286A6B1F0A2CD17D9AC3DE5B2C03EEE1B0932852A07121D567CCEE3F",
+                "tags": ["explicit"]
+            },
+            {
+                "name": "WBCH S07E02 Normal-Version - Lush BNWO Life",
+                "episode": 2,
+                "hash": "14A38CB1AA290F3A65E42C8572101277B5FCBA3024A453B6E9C523FE1AEEC1B4",
+                "tags": []
+            },
+            {
+                "name": "WBCH S07E02 Explicit-Version - Lush BNWO Life",
+                "episode": 2,
+                "hash": "322D0B5B0675B5EE4D92B6EB83C8FCC8A0F9B991689ADDCB3790647820F429C6",
+                "tags": ["explicit"]
+            },
+            {
+                "name": "WBCH S07E03 Normal-Version - BNWO Nostalgia",
+                "episode": 3,
+                "hash": "6F7007ED8A543CD78E1D769005AC91CA55D4F674A89F2621BA66FC49CFD12643",
+                "tags": []
+            },
+            {
+                "name": "WBCH S07E03 Explicit-Version - BNWO Nostalgia",
+                "episode": 3,
+                "hash": "F6164757A588D807BDD25254A6A45A2CD5EA5BA0724FAE8755C88E39AA1537EC",
+                "tags": ["explicit"]
+            },
+            {
+                "name": "WBCH S07E04 Normal-Version - Whiteboi Tryptych (Journey Of A Whiteboi)",
+                "episode": 4,
+                "hash": "10A4082833CB0E0843905734486DE14BBF3560F56C48F5A1A4AD6E3327A2A75E",
+                "tags": []
+            },
+            {
+                "name": "WBCH S07E04 Explicit-Version - Whiteboi Tryptych (Journey Of A Whiteboi)",
+                "episode": 4,
+                "hash": "D457B39D94D61E5301085BD25F0592DA58E11C14A3ACD6E5BEF71F3D0E3D5621",
+                "tags": ["explicit"]
+            },
+            {
+                "name": "WBCH S07E04 NoBeatbar-Version - Whiteboi Tryptych (Journey Of A Whiteboi)",
+                "episode": 4,
+                "hash": "CA1CE3C06BBD8060BD0309EE112941EF6746A5F33FA4BB14FBF224DAF2229E92",
+                "tags": ["no-beatbar"]
+            }
+        ],
 
     "WBDH": {
         "season": "WBDH",
