@@ -1,0 +1,70 @@
+name: Build release EXE
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyinstaller
+
+      - name: Build EXE
+        shell: pwsh
+        run: |
+          $iconArg = ""
+          if (Test-Path ".\icon.ico") {
+            $iconArg = "--icon .\\icon.ico"
+          }
+          elseif (Test-Path ".\assets\icon.ico") {
+            $iconArg = "--icon .\\assets\\icon.ico"
+          }
+
+          $buildArgs = @(
+            "--noconfirm",
+            "--onefile",
+            "--console",
+            "--name", "WBCH-organizer",
+            "--clean",
+            ".\\main.py"
+          )
+
+          if ($iconArg) {
+            $buildArgs = @(
+              "--noconfirm",
+              "--onefile",
+              "--console",
+              "--name", "WBCH-organizer",
+              "--clean"
+            ) + @($iconArg.Split(' ')) + @(".\\main.py")
+          }
+
+          pyinstaller @buildArgs
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WBCH-organizer-win64
+          path: dist/WBCH-organizer.exe
+          if-no-files-found: error
+
+      - name: Attach EXE to GitHub release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/WBCH-organizer.exe
