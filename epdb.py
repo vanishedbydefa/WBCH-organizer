@@ -30,16 +30,17 @@ def load_db(file_path: str):
         return None
 
 def find_episode_by_hash(db, hash_value: str):
+    target_hash = (hash_value or "").lower()
     for season, season_data in db.items():
         for episode in season_data.get("episodes"):
-            if episode.get("hash") == hash_value:
+            if (episode.get("hash") or "").lower() == target_hash:
                 return episode
     return None 
 
 
 def report(db, wbch_files: list):
     # Create a dictionary for quick lookup of available files (hash → file path)
-    system_files = {file_hash: file_path for file_path, file_hash in wbch_files}
+    system_files = {str(file_hash).lower(): file_path for file_path, file_hash in wbch_files}
 
     total_episodes = 0
     found_episodes = 0
@@ -54,7 +55,7 @@ def report(db, wbch_files: list):
 
         for episode in season_data.get("episodes", []):
             episode_name = episode.get("name", "Unknown Episode")
-            episode_hash = episode.get("hash")
+            episode_hash = (episode.get("hash") or "").lower()
 
             total_episodes += 1
 
