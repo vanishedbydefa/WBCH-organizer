@@ -6,7 +6,7 @@ import requests as re
 from logger import logger
 
 def download_epdb(base_path: os.PathLike):
-    url = "https://raw.githubusercontent.com/vanishedbydefa/WBCH-decider/refs/heads/main/epdb_new.json"
+    url = "https://raw.githubusercontent.com/vanishedbydefa/WBCH-organizer/refs/heads/main/epdb.json"
     resp = re.get(url, timeout=10)
     if resp.status_code == 200:
         filename = os.path.join(base_path, os.path.basename(url))

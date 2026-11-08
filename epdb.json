@@ -685,6 +685,12 @@
                 "hash": "3fe759a06aa37f60548e5e84cc2281d72f4c68413ec5c31dd936d45c74001836",
                 "tags": ["explicit"]
             },
+            {
+                "name": "WBCH S06E09 Censored-Version - Down the rabbit hole",
+                "episode": 9,
+                "hash": "d5e4e0a7c561d87ba877da037b7f4b6cff555221633551ca80ba155d8491f18a",
+                "tags": ["censored"]
+            },
             {           
                 "name": "WBCH S06E10 Normal-Version - No Balls",
                 "episode": 10,
